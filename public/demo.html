@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinuxChallenges Demo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --primary: #ff6b35;
+      --secondary: #1a1a2e;
+      --accent: #00d9ff;
+      --bg: #0f0f1a;
+      --card: #16213e;
+      --text: #eaeaea;
+      --success: #4ade80;
+    }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    
+    .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+    
+    header {
+      background: linear-gradient(135deg, var(--secondary), var(--card));
+      padding: 30px;
+      border-radius: 20px;
+      margin-bottom: 30px;
+    }
+    
+    h1 { font-size: 2rem; margin-bottom: 10px; }
+    .tagline { color: #888; }
+    
+    .back-link {
+      display: inline-block;
+      margin-top: 15px;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    
+    .back-link:hover { text-decoration: underline; }
+    
+    .stats {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .stat {
+      background: rgba(255,255,255,0.05);
+      padding: 15px 25px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    
+    .stat-value { font-size: 2rem; font-weight: bold; color: var(--accent); }
+    .stat-label { font-size: 0.85rem; color: #888; }
+    
+    .badges-section { margin: 30px 0; }
+    .badges { display: flex; flex-wrap: wrap; gap: 10px; }
+    
+    .badge {
+      background: var(--card);
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: 1px solid var(--primary);
+      font-size: 0.9rem;
+    }
+    
+    .badge.locked { opacity: 0.4; border-color: #333; }
+    .badge.earned { border-color: var(--success); background: rgba(74,222,128,0.1); }
+    
+    h2 { font-size: 1.5rem; margin: 30px 0 20px; color: var(--primary); }
+    
+    .challenges { display: grid; gap: 20px; }
+    
+    .challenge {
+      background: var(--card);
+      border-radius: 15px;
+      padding: 25px;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 1px solid transparent;
+    }
+    
+    .challenge:hover { border-color: var(--primary); transform: translateY(-2px); }
+    .challenge.completed { border-color: var(--success); opacity: 0.8; }
+    
+    .challenge-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 15px;
+    }
+    
+    .challenge-title { font-size: 1.3rem; font-weight: bold; }
+    .challenge-subtitle { color: #888; font-size: 0.9rem; margin-top: 5px; }
+    
+    .difficulty {
+      padding: 5px 12px;
+      border-radius: 15px;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+    
+    .difficulty.Beginner { background: #22c55e33; color: #4ade80; }
+    .difficulty.Intermediate { background: #f59e0b33; color: #fbbf24; }
+    .difficulty.Advanced { background: #ef444433; color: #f87171; }
+    
+    .challenge-scenario {
+      background: rgba(0,0,0,0.3);
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border-left: 3px solid var(--accent);
+      font-style: italic;
+    }
+    
+    .tasks { list-style: none; }
+    .tasks li { padding: 8px 0; display: flex; align-items: center; gap: 10px; }
+    .tasks li::before { content: '⬜'; }
+    .tasks li.done::before { content: '✅'; }
+    
+    .start-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: all 0.2s;
+    }
+    
+    .start-btn:hover { transform: scale(1.02); box-shadow: 0 5px 20px rgba(255, 107, 53, 0.3); }
+    
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      padding: 30px;
+      color: #555;
+    }
+    
+    .notice {
+      background: rgba(0, 217, 255, 0.1);
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🐧 LinuxChallenges Demo</h1>
+      <p class="tagline">Try a sample challenge. See how it works.</p>
+      <a href="/" class="back-link">← Back to Landing Page</a>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-value" id="completed-count">0</div>
+          <div class="stat-label">Completed</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="badge-count">0</div>
+          <div class="stat-label">Badges</div>
+        </div>
+      </div>
+    </header>
+    
+    <div class="notice">
+      ⚠️ This is a demo. Real challenges include live VMs, terminal access, and verification scripts.
+    </div>
+    
+    <section class="badges-section">
+      <h2>🏆 Your Badges</h2>
+      <div class="badges" id="badges-container"></div>
+    </section>
+    
+    <section>
+      <h2>📦 Monthly Challenges</h2>
+      <div class="challenges" id="challenges-container"></div>
+    </section>
+    
+    <footer class="footer">
+      LinuxChallenges Demo • Learn Linux by breaking it<br>
+      🐧 Fix. Hack. Learn.
+    </footer>
+  </div>
+  
+  <script>
+    let progress = { completed: [], badges: [], currentChallenge: 1 };
+    let challenges = [];
+    
+    async function load() {
+      const [chRes, prRes] = await Promise.all([
+        fetch('/api/challenges'),
+        fetch('/api/progress')
+      ]);
+      challenges = await chRes.json();
+      progress = await prRes.json();
+      render();
+    }
+    
+    function render() {
+      document.getElementById('completed-count').textContent = progress.completed.length;
+      document.getElementById('badge-count').textContent = progress.badges.length;
+      
+      const badgesContainer = document.getElementById('badges-container');
+      badgesContainer.innerHTML = challenges.map(c => {
+        const earned = progress.badges.includes(c.badge);
+        return `<div class="badge ${earned ? 'earned' : 'locked'}">${earned ? c.badge : '🔒 ' + c.badge.split(' ')[1]}</div>`;
+      }).join('');
+      
+      const container = document.getElementById('challenges-container');
+      container.innerHTML = challenges.map(c => {
+        const isCompleted = progress.completed.includes(c.id);
+        const isLocked = c.id > progress.currentChallenge;
+        return `
+          <div class="challenge ${isCompleted ? 'completed' : ''}" onclick="startChallenge(${c.id})">
+            <div class="challenge-header">
+              <div>
+                <div class="challenge-title">📦 Month ${c.id}: ${c.title}</div>
+                <div class="challenge-subtitle">${c.subtitle}</div>
+              </div>
+              <span class="difficulty ${c.difficulty}">${c.difficulty}</span>
+            </div>
+            <div class="challenge-scenario">${c.scenario}</div>
+            <ul class="tasks">
+              ${c.tasks.map(t => `<li class="${isCompleted ? 'done' : ''}">${t}</li>`).join('')}
+            </ul>
+            ${isCompleted ? '<div style="color: var(--success); margin-top: 10px;">✓ Completed</div>' : '<button class="start-btn">Start Challenge</button>'}
+          </div>
+        `;
+      }).join('');
+    }
+    
+    async function startChallenge(id) {
+      const c = challenges.find(ch => ch.id === id);
+      if (progress.completed.includes(id)) return;
+      
+      if (confirm(`Start: ${c.title}\\n\\n${c.scenario}\\n\\nIn the real version, you'd get:\\n• A live VM with the problem\\n• SSH access to diagnose\\n• Verification scripts\\n\\nClick OK to mark as completed (demo mode).`)) {
+        await fetch(`/api/complete/${id}`, { method: 'POST' });
+        await load();
+      }
+    }
+    
+    load();
+  </script>
+</body>
+</html>
