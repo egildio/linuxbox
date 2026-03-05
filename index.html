@@ -555,13 +555,17 @@
   <section class="pricing" id="support">
     <div class="container">
       <h2>Support the <span>Project</span></h2>
-      <p class="section-subtitle">Enjoy the free demo? Buy me a coffee to keep building!</p>
+      <p class="section-subtitle">Enjoy the free demo? Buy me a coffee or send some SOL!</p>
       
       <div class="waitlist-box">
         <a href="https://ko-fi.com/yourkofilink" target="_blank" class="btn btn-primary" style="font-size:1.2rem;padding:20px 40px;">
           ☕ Buy Me a Coffee
         </a>
-        <p class="waitlist-note" style="margin-top:20px;">Your support helps create more challenges!</p>
+        <a href="#" onclick="copySolana()" class="btn btn-secondary" style="font-size:1rem;padding:20px 30px;margin-left:10px;">
+          🪙 Donate SOL
+        </a>
+        <p class="waitlist-note" style="margin-top:20px;" id="solana-address">7GciL6JdG2FpSSHRp4LJCkWQKx3oT5mKjYXtJfLq4N7</p>
+        <p class="waitlist-note" id="copy-msg" style="display:none;color:#4ade80;">✅ Address copied!</p>
       </div>
       
       <div class="perks">
@@ -607,6 +611,13 @@
   <a href="demo.html" class="demo-link">Try Demo →</a>
   
   <script>
+    function copySolana() {
+      const addr = '7GciL6JdG2FpSSHRp4LJCkWQKx3oT5mKjYXtJfLq4N7';
+      navigator.clipboard.writeText(addr);
+      document.getElementById('copy-msg').style.display = 'block';
+      setTimeout(() => document.getElementById('copy-msg').style.display = 'none', 2000);
+    }
+    
     document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       const email = document.getElementById('email').value;
