@@ -1,258 +1,795 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LinuxChallenges Demo</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    :root {
-      --primary: #ff6b35;
-      --secondary: #1a1a2e;
-      --accent: #00d9ff;
-      --bg: #0f0f1a;
-      --card: #16213e;
-      --text: #eaeaea;
-      --success: #4ade80;
-    }
-    
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
-    
-    .container { max-width: 900px; margin: 0 auto; padding: 20px; }
-    
-    header {
-      background: linear-gradient(135deg, var(--secondary), var(--card));
-      padding: 30px;
-      border-radius: 20px;
-      margin-bottom: 30px;
-    }
-    
-    h1 { font-size: 2rem; margin-bottom: 10px; }
-    .tagline { color: #888; }
-    
-    .back-link {
-      display: inline-block;
-      margin-top: 15px;
-      color: var(--accent);
-      text-decoration: none;
-    }
-    
-    .back-link:hover { text-decoration: underline; }
-    
-    .stats {
-      display: flex;
-      gap: 20px;
-      margin-top: 20px;
-    }
-    
-    .stat {
-      background: rgba(255,255,255,0.05);
-      padding: 15px 25px;
-      border-radius: 10px;
-      text-align: center;
-    }
-    
-    .stat-value { font-size: 2rem; font-weight: bold; color: var(--accent); }
-    .stat-label { font-size: 0.85rem; color: #888; }
-    
-    .badges-section { margin: 30px 0; }
-    .badges { display: flex; flex-wrap: wrap; gap: 10px; }
-    
-    .badge {
-      background: var(--card);
-      padding: 10px 20px;
-      border-radius: 20px;
-      border: 1px solid var(--primary);
-      font-size: 0.9rem;
-    }
-    
-    .badge.locked { opacity: 0.4; border-color: #333; }
-    .badge.earned { border-color: var(--success); background: rgba(74,222,128,0.1); }
-    
-    h2 { font-size: 1.5rem; margin: 30px 0 20px; color: var(--primary); }
-    
-    .challenges { display: grid; gap: 20px; }
-    
-    .challenge {
-      background: var(--card);
-      border-radius: 15px;
-      padding: 25px;
-      cursor: pointer;
-      transition: all 0.3s;
-      border: 1px solid transparent;
-    }
-    
-    .challenge:hover { border-color: var(--primary); transform: translateY(-2px); }
-    .challenge.completed { border-color: var(--success); opacity: 0.8; }
-    
-    .challenge-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: start;
-      margin-bottom: 15px;
-    }
-    
-    .challenge-title { font-size: 1.3rem; font-weight: bold; }
-    .challenge-subtitle { color: #888; font-size: 0.9rem; margin-top: 5px; }
-    
-    .difficulty {
-      padding: 5px 12px;
-      border-radius: 15px;
-      font-size: 0.75rem;
-      font-weight: bold;
-    }
-    
-    .difficulty.Beginner { background: #22c55e33; color: #4ade80; }
-    .difficulty.Intermediate { background: #f59e0b33; color: #fbbf24; }
-    .difficulty.Advanced { background: #ef444433; color: #f87171; }
-    
-    .challenge-scenario {
-      background: rgba(0,0,0,0.3);
-      padding: 15px;
-      border-radius: 10px;
-      margin: 15px 0;
-      border-left: 3px solid var(--accent);
-      font-style: italic;
-    }
-    
-    .tasks { list-style: none; }
-    .tasks li { padding: 8px 0; display: flex; align-items: center; gap: 10px; }
-    .tasks li::before { content: '⬜'; }
-    .tasks li.done::before { content: '✅'; }
-    
-    .start-btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 12px 30px;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 15px;
-      transition: all 0.2s;
-    }
-    
-    .start-btn:hover { transform: scale(1.02); box-shadow: 0 5px 20px rgba(255, 107, 53, 0.3); }
-    
-    .footer {
-      text-align: center;
-      margin-top: 50px;
-      padding: 30px;
-      color: #555;
-    }
-    
-    .notice {
-      background: rgba(0, 217, 255, 0.1);
-      border: 1px solid var(--accent);
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinuxBox - Interactive Terminal Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #00d9ff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px 40px;
+            text-align: center;
+            min-width: 150px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            color: #00d9ff;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #00d9ff;
+            text-decoration: none;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background: rgba(0, 217, 255, 0.1);
+            border-color: #00d9ff;
+        }
+
+        .demo-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .demo-title {
+            color: #00d9ff;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .demo-description {
+            color: #888;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Terminal Styles */
+        .terminal-wrapper {
+            background: #0d1117;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            margin: 20px 0;
+        }
+
+        .terminal-header {
+            background: #161b22;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .btn-red { background: #ff5f56; }
+        .btn-yellow { background: #ffbd2e; }
+        .btn-green { background: #27ca40; }
+
+        .terminal-title {
+            flex: 1;
+            text-align: center;
+            color: #8b949e;
+            font-size: 0.85rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .terminal-body {
+            padding: 15px;
+            font-family: 'Courier New', 'Consolas', monospace;
+            font-size: 14px;
+            min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .terminal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .terminal-body::-webkit-scrollbar-track {
+            background: #0d1117;
+        }
+
+        .terminal-body::-webkit-scrollbar-thumb {
+            background: #30363d;
+            border-radius: 4px;
+        }
+
+        .terminal-line {
+            margin: 5px 0;
+            line-height: 1.5;
+        }
+
+        .prompt {
+            color: #27ca40;
+            font-weight: bold;
+        }
+
+        .path {
+            color: #58a6ff;
+        }
+
+        .command {
+            color: #e0e0e0;
+        }
+
+        .output {
+            color: #c9d1d9;
+            margin-left: 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .output-line {
+            color: #8b949e;
+        }
+
+        .input-line {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-line .prompt {
+            margin-right: 8px;
+        }
+
+        #terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #e0e0e0;
+            font-family: 'Courier New', 'Consolas', monospace;
+            font-size: 14px;
+            outline: none;
+            caret-color: #27ca40;
+        }
+
+        /* Command Buttons */
+        .command-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .cmd-btn {
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            color: #00d9ff;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+
+        .cmd-btn:hover {
+            background: rgba(0, 217, 255, 0.2);
+            border-color: #00d9ff;
+            transform: translateY(-2px);
+        }
+
+        /* Command Reference */
+        .command-reference {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .command-reference h3 {
+            color: #00d9ff;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .command-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .command-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid #00d9ff;
+        }
+
+        .command-name {
+            color: #27ca40;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .command-desc {
+            color: #888;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .command-example {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 10px;
+            border-radius: 3px;
+            margin-top: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #c9d1d9;
+        }
+
+        .success-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #27ca40, #20b030);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .warning-box {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            color: #ffecb3;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #888;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+        }
+
+        /* Animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .cursor {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 217, 255, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(0, 217, 255, 0.8); }
+        }
+
+        .terminal-wrapper {
+            animation: glow 2s infinite;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>🐧 LinuxChallenges Demo</h1>
-      <p class="tagline">Try a sample challenge. See how it works.</p>
-      <a href="/" class="back-link">← Back to Landing Page</a>
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-value" id="completed-count">0</div>
-          <div class="stat-label">Completed</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" id="badge-count">0</div>
-          <div class="stat-label">Badges</div>
-        </div>
-      </div>
-    </header>
-    
-    <div class="notice">
-      ⚠️ This is a demo. Real challenges include live VMs, terminal access, and verification scripts.
-    </div>
-    
-    <section class="badges-section">
-      <h2>🏆 Your Badges</h2>
-      <div class="badges" id="badges-container"></div>
-    </section>
-    
-    <section>
-      <h2>📦 Monthly Challenges</h2>
-      <div class="challenges" id="challenges-container"></div>
-    </section>
-    
-    <footer class="footer">
-      LinuxChallenges Demo • Learn Linux by breaking it<br>
-      🐧 Fix. Hack. Learn.
-    </footer>
-  </div>
-  
-  <script>
-    let progress = { completed: [], badges: [], currentChallenge: 1 };
-    let challenges = [];
-    
-    async function load() {
-      const [chRes, prRes] = await Promise.all([
-        fetch('/api/challenges'),
-        fetch('/api/progress')
-      ]);
-      challenges = await chRes.json();
-      progress = await prRes.json();
-      render();
-    }
-    
-    function render() {
-      document.getElementById('completed-count').textContent = progress.completed.length;
-      document.getElementById('badge-count').textContent = progress.badges.length;
-      
-      const badgesContainer = document.getElementById('badges-container');
-      badgesContainer.innerHTML = challenges.map(c => {
-        const earned = progress.badges.includes(c.badge);
-        return `<div class="badge ${earned ? 'earned' : 'locked'}">${earned ? c.badge : '🔒 ' + c.badge.split(' ')[1]}</div>`;
-      }).join('');
-      
-      const container = document.getElementById('challenges-container');
-      container.innerHTML = challenges.map(c => {
-        const isCompleted = progress.completed.includes(c.id);
-        const isLocked = c.id > progress.currentChallenge;
-        return `
-          <div class="challenge ${isCompleted ? 'completed' : ''}" onclick="startChallenge(${c.id})">
-            <div class="challenge-header">
-              <div>
-                <div class="challenge-title">📦 Month ${c.id}: ${c.title}</div>
-                <div class="challenge-subtitle">${c.subtitle}</div>
-              </div>
-              <span class="difficulty ${c.difficulty}">${c.difficulty}</span>
+    <div class="container">
+        <a href="/" class="back-link">← Back to Landing Page</a>
+        
+        <header>
+            <h1>🐧 LinuxBox Demo</h1>
+            <p class="subtitle">Try a sample challenge. See how it works.</p>
+        </header>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-number" id="completed-count">0</div>
+                <div class="stat-label">Completed</div>
             </div>
-            <div class="challenge-scenario">${c.scenario}</div>
-            <ul class="tasks">
-              ${c.tasks.map(t => `<li class="${isCompleted ? 'done' : ''}">${t}</li>`).join('')}
-            </ul>
-            ${isCompleted ? '<div style="color: var(--success); margin-top: 10px;">✓ Completed</div>' : '<button class="start-btn">Start Challenge</button>'}
-          </div>
-        `;
-      }).join('');
-    }
-    
-    async function startChallenge(id) {
-      const c = challenges.find(ch => ch.id === id);
-      if (progress.completed.includes(id)) return;
-      
-      if (confirm(`Start: ${c.title}\\n\\n${c.scenario}\\n\\nIn the real version, you'd get:\\n• A live VM with the problem\\n• SSH access to diagnose\\n• Verification scripts\\n\\nClick OK to mark as completed (demo mode).`)) {
-        await fetch(`/api/complete/${id}`, { method: 'POST' });
-        await load();
-      }
-    }
-    
-    load();
-  </script>
+            <div class="stat-card">
+                <div class="stat-number" id="badges-count">0</div>
+                <div class="stat-label">Badges</div>
+            </div>
+        </div>
+
+        <div class="warning-box">
+            ⚠️ This is a demo. Real challenges include live VMs, terminal access, and verification scripts.
+        </div>
+
+        <!-- Interactive Terminal Demo Section -->
+        <div class="demo-section">
+            <h2 class="demo-title">🖥️ Interactive Terminal Simulator</h2>
+            <p class="demo-description">
+                Practice Linux commands right here! Type commands below or click the quick commands to get started.
+                This terminal simulates a real Linux environment with common commands.
+            </p>
+
+            <div class="terminal-wrapper">
+                <div class="terminal-header">
+                    <div class="terminal-button btn-red"></div>
+                    <div class="terminal-button btn-yellow"></div>
+                    <div class="terminal-button btn-green"></div>
+                    <span class="terminal-title">linuxbox@guest:~</span>
+                </div>
+                <div class="terminal-body" id="terminal">
+                    <div class="terminal-line">
+                        <span class="output">Welcome to LinuxBox Interactive Terminal Demo!</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="output">Type 'help' to see available commands.</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="output">─────────────────────────────────────</span>
+                    </div>
+                    <div class="input-line" id="input-line">
+                        <span class="prompt">guest@linuxbox</span><span class="path">:~$</span>
+                        <input type="text" id="terminal-input" autofocus autocomplete="off" spellcheck="false">
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-buttons">
+                <button class="cmd-btn" onclick="runCommand('help')">help</button>
+                <button class="cmd-btn" onclick="runCommand('ls')">ls</button>
+                <button class="cmd-btn" onclick="runCommand('pwd')">pwd</button>
+                <button class="cmd-btn" onclick="runCommand('echo Hello LinuxBox!')">echo</button>
+                <button class="cmd-btn" onclick="runCommand('whoami')">whoami</button>
+                <button class="cmd-btn" onclick="runCommand('date')">date</button>
+                <button class="cmd-btn" onclick="runCommand('clear')">clear</button>
+                <button class="cmd-btn" onclick="runCommand('cat /etc/os-release')">cat /etc/os-release</button>
+            </div>
+
+            <div class="success-badge">✨ Try commands above to explore the terminal!</div>
+        </div>
+
+        <!-- Command Reference Section -->
+        <div class="command-reference">
+            <h3>📚 Quick Command Reference</h3>
+            <div class="command-grid">
+                <div class="command-item">
+                    <div class="command-name">ls</div>
+                    <div class="command-desc">List directory contents</div>
+                    <div class="command-example">$ ls -la</div>
+                </div>
+                <div class="command-item">
+                    <div class="command-name">pwd</div>
+                    <div class="command-desc">Print working directory</div>
+                    <div class="command-example">$ pwd</div>
+                </div>
+                <div class="command-item">
+                    <div class="command-name">cd</div>
+                    <div class="command-desc">Change directory</div>
+                    <div class="command-example">$ cd /home</div>
+                </div>
+                <div class="command-item">
+                    <div class="command-name">cat</div>
+                    <div class="command-desc">Display file contents</div>
+                    <div class="command-example">$ cat file.txt</div>
+                </div>
+                <div class="command-item">
+                    <div class="command-name">echo</div>
+                    <div class="command-desc">Print text to terminal</div>
+                    <div class="command-example">$ echo "Hello"</div>
+                </div>
+                <div class="command-item">
+                    <div class="command-name">whoami</div>
+                    <div class="command-desc">Show current user</div>
+                    <div class="command-example">$ whoami</div>
+                </div>
+                <div class="command-item">
+                    <div class="command-name">date</div>
+                    <div class="command-desc">Show current date/time</div>
+                    <div class="command-example">$ date</div>
+                </div>
+                <div class="command-item">
+                    <div class="command-name">clear</div>
+                    <div class="command-desc">Clear terminal screen</div>
+                    <div class="command-example">$ clear</div>
+                </div>
+                <div class="command-item">
+                    <div class="command-name">man</div>
+                    <div class="command-desc">Show command manual</div>
+                    <div class="command-example">$ man ls</div>
+                </div>
+                <div class="command-item">
+                    <div class="command-name">grep</div>
+                    <div class="command-desc">Search text patterns</div>
+                    <div class="command-example">$ grep "root" /etc/passwd</div>
+                </div>
+                <div class="command-item">
+                    <div class="command-name">ps</div>
+                    <div class="command-desc">Show running processes</div>
+                    <div class="command-example">$ ps aux</div>
+                </div>
+                <div class="command-item">
+                    <div class="command-name">top</div>
+                    <div class="command-desc">View system processes</div>
+                    <div class="command-example">$ top</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🐧 LinuxBox - Learn Linux through hands-on challenges</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">Built with ❤️ for Linux learners</p>
+        </div>
+    </div>
+
+    <script>
+        // Terminal Simulator Logic
+        const terminal = document.getElementById('terminal');
+        const input = document.getElementById('terminal-input');
+        const inputLine = document.getElementById('input-line');
+
+        // Virtual filesystem
+        const fileSystem = {
+            '~': {
+                type: 'dir',
+                contents: {
+                    'welcome.txt': { type: 'file', content: 'Welcome to LinuxBox! This is your home directory.' },
+                    'linuxbox-notes.txt': { type: 'file', content: 'LinuxBox Challenge Platform\nVersion: 1.0\nStatus: Demo Mode' },
+                    'projects': {
+                        type: 'dir',
+                        contents: {
+                            'hello.c': { type: 'file', content: '#include <stdio.h>\nint main() {\n    printf("Hello, World!\\n");\n    return 0;\n}' },
+                            'script.sh': { type: 'file', content: '#!/bin/bash\necho "This is a bash script"\necho "Running on LinuxBox"' }
+                        }
+                    },
+                    'documents': {
+                        type: 'dir',
+                        contents: {
+                            'readme.md': { type: 'file', content: '# LinuxBox Documentation\n\nThis is the LinuxBox challenge platform demo.' }
+                        }
+                    }
+                }
+            },
+            '/etc': {
+                type: 'dir',
+                contents: {
+                    'os-release': {
+                        type: 'file',
+                        content: 'PRETTY_NAME="LinuxBox Demo"\nNAME="LinuxBox"\nVERSION_ID="1.0"\nID=linuxbox\nID_LIKE=debian\nHOME_URL="https://linuxbox.io"\n'
+                    },
+                    'passwd': {
+                        type: 'file',
+                        content: 'root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nguest:x:1000:1000:guest:/home/guest:/bin/bash\n'
+                    }
+                }
+            },
+            '/home': {
+                type: 'dir',
+                contents: {
+                    'guest': {
+                        type: 'dir',
+                        contents: {}
+                    }
+                }
+            }
+        };
+
+        let currentPath = '~';
+        let commandHistory = [];
+        let historyIndex = -1;
+
+        // Simulated file system commands
+        function resolvePath(path) {
+            if (path.startsWith('~')) {
+                path = path.replace('~', '~');
+            }
+            if (path.startsWith('/')) {
+                return path;
+            }
+            if (currentPath === '~') {
+                return '~/' + path;
+            }
+            return currentPath + '/' + path;
+        }
+
+        function getFile(path) {
+            const parts = path.split('/').filter(p => p);
+            let current = fileSystem['~'];
+            
+            if (path.startsWith('/')) {
+                if (path.startsWith('/etc')) {
+                    current = fileSystem['/etc'];
+                    parts.shift();
+                } else if (path.startsWith('/home')) {
+                    current = fileSystem['/home'];
+                    parts.shift();
+                }
+            }
+            
+            for (const part of parts) {
+                if (part === '.') continue;
+                if (part === '..') {
+                    continue;
+                }
+                if (current.contents && current.contents[part]) {
+                    current = current.contents[part];
+                } else {
+                    return null;
+                }
+            }
+            return current;
+        }
+
+        function listDirectory(path) {
+            const dir = getFile(path);
+            if (!dir || dir.type !== 'dir') {
+                return null;
+            }
+            return Object.keys(dir.contents).map(name => {
+                const item = dir.contents[name];
+                const type = item.type === 'dir' ? 'd' : '-';
+                return { name, type };
+            });
+        }
+
+        // Add line to terminal
+        function addLine(html) {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.innerHTML = html;
+            terminal.insertBefore(line, inputLine);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        // Process command
+        function processCommand(cmd) {
+            const args = cmd.trim().split(' ');
+            const command = args[0];
+            
+            addLine(`<span class="prompt">guest@linuxbox</span><span class="path">:${currentPath}$</span> <span class="command">${cmd}</span>`);
+            
+            // Add to history
+            commandHistory.push(cmd);
+            historyIndex = commandHistory.length;
+
+            switch (command) {
+                case 'help':
+                    addLine('<span class="output">Available commands: help, ls, pwd, cd, cat, echo, whoami, date, clear, man, grep, ps, history, exit</span>');
+                    break;
+
+                case 'ls':
+                    const flag = args[1];
+                    const listing = listDirectory(currentPath);
+                    if (listing) {
+                        if (flag === '-la' || flag === '-l') {
+                            const now = new Date();
+                            listing.forEach(item => {
+                                const perms = item.type === 'd' ? 'drwxr-xr-x' : '-rw-r--r--';
+                                const size = item.type === 'd' ? '4096' : Math.floor(Math.random() * 1000);
+                                addLine(`<span class="output-line">${perms} guest guest ${size} ${now.toLocaleDateString()} ${item.name}</span>`);
+                            });
+                        } else {
+                            const names = listing.map(i => {
+                                return i.type === 'd' ? `<span style="color: #58a6ff">${i.name}/</span>` : i.name;
+                            });
+                            addLine('<span class="output">' + names.join('  ') + '</span>');
+                        }
+                    } else {
+                        addLine('<span class="output" style="color: #ff5f56">ls: cannot access: No such file or directory</span>');
+                    }
+                    break;
+
+                case 'pwd':
+                    addLine('<span class="output">' + currentPath + '</span>');
+                    break;
+
+                case 'cd':
+                    const newDir = args[1];
+                    if (!newDir || newDir === '~') {
+                        currentPath = '~';
+                    } else if (newDir === '..') {
+                        if (currentPath !== '~') {
+                            currentPath = '~';
+                        }
+                    } else if (newDir === '.') {
+                        // Stay in current directory
+                    } else {
+                        const target = getFile(resolvePath(newDir));
+                        if (target && target.type === 'dir') {
+                            currentPath = resolvePath(newDir);
+                        } else {
+                            addLine('<span class="output" style="color: #ff5f56">cd: ' + newDir + ': No such directory</span>');
+                        }
+                    }
+                    break;
+
+                case 'cat':
+                    if (!args[1]) {
+                        addLine('<span class="output" style="color: #ff5f56">cat: missing file operand</span>');
+                    } else {
+                        const file = getFile(resolvePath(args[1]));
+                        if (file && file.type === 'file') {
+                            addLine('<span class="output">' + file.content.replace(/\n/g, '<br>') + '</span>');
+                        } else {
+                            addLine('<span class="output" style="color: #ff5f56">cat: ' + args[1] + ': No such file</span>');
+                        }
+                    }
+                    break;
+
+                case 'echo':
+                    const text = args.slice(1).join(' ').replace(/"/g, '').replace(/'/g, '');
+                    addLine('<span class="output">' + text + '</span>');
+                    break;
+
+                case 'whoami':
+                    addLine('<span class="output">guest</span>');
+                    break;
+
+                case 'date':
+                    addLine('<span class="output">' + new Date().toString() + '</span>');
+                    break;
+
+                case 'clear':
+                    terminal.innerHTML = '';
+                    terminal.appendChild(inputLine);
+                    break;
+
+                case 'man':
+                    if (args[1]) {
+                        addLine('<span class="output">Manual page for ' + args[1] + ' (simulated)</span>');
+                        addLine('<span class="output">This is a demo - real man pages would appear in production</span>');
+                    } else {
+                        addLine('<span class="output" style="color: #ff5f56">man: What manual page do you want?</span>');
+                    }
+                    break;
+
+                case 'grep':
+                    if (args[1] && args[2]) {
+                        const pattern = args[1];
+                        const file = getFile(resolvePath(args[2]));
+                        if (file && file.type === 'file') {
+                            const lines = file.content.split('\n');
+                            const matches = lines.filter(l => l.includes(pattern));
+                            if (matches.length > 0) {
+                                matches.forEach(m => addLine('<span class="output">' + m + '</span>'));
+                            } else {
+                                addLine('<span class="output">(no matches found)</span>');
+                            }
+                        } else {
+                            addLine('<span class="output" style="color: #ff5f56">grep: ' + args[2] + ': No such file</span>');
+                        }
+                    } else {
+                        addLine('<span class="output" style="color: #ff5f56">Usage: grep PATTERN FILE</span>');
+                    }
+                    break;
+
+                case 'ps':
+                    addLine('<span class="output-line">USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND</span>');
+                    addLine('<span class="output-line">root         1  0.0  0.1  12345  1234 ?        Ss   Mar14   0:00 /sbin/init</span>');
+                    addLine('<span class="output-line">guest     1000  0.5  0.5  23456  2345 pts/0    S    Mar14   0:01 bash</span>');
+                    addLine('<span class="output-line">guest     1001  0.1  0.2  11234  1123 pts/0    S+   Mar14   0:00 ps aux</span>');
+                    break;
+
+                case 'history':
+                    commandHistory.forEach((cmd, i) => {
+                        addLine('<span class="output-line">' + (i + 1) + '  ' + cmd + '</span>');
+                    });
+                    break;
+
+                case 'exit':
+                    addLine('<span class="output">logout</span>');
+                    input.disabled = true;
+                    break;
+
+                case '':
+                    break;
+
+                default:
+                    addLine('<span class="output" style="color: #ff5f56">Command not found: ' + command + '</span>');
+                    if (command === 'sudo') {
+                        addLine('<span class="output" style="color: #ffc107">guest is not in the sudoers file. This incident will be reported.</span>');
+                    } else if (command === 'vim' || command === 'nano') {
+                        addLine('<span class="output">' + command + ': This is a demo. Use cat to view files.</span>');
+                    }
+            }
+        }
+
+        // Run command from button
+        function runCommand(cmd) {
+            input.value = cmd;
+            processCommand(cmd);
+            input.value = '';
+            input.focus();
+        }
+
+        // Event listeners
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                processCommand(this.value);
+                this.value = '';
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    this.value = commandHistory[historyIndex];
+                }
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                    this.value = commandHistory[historyIndex];
+                } else {
+                    historyIndex = commandHistory.length;
+                    this.value = '';
+                }
+            }
+        });
+
+        // Focus input when clicking terminal
+        terminal.addEventListener('click', function() {
+            input.focus();
+        });
+
+        // Initial focus
+        input.focus();
+    </script>
 </body>
 </html>
